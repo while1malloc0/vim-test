@@ -95,9 +95,24 @@ function! s:execute_script(name, cmd) abort
   execute 'silent !'.cmd
 endfunction
 
+function! s:find_root() abort
+  let parts = split(expand('%:p'), "/")
+  let test_dir_idx = index(parts, "spec")
+  " check for "test" as well
+  "   " check against -1
+  let root_parts = parts[0:test_dir_idx-1]
+  return '/' . join(root_parts, "/")
+endfunction
+
 function! s:pretty_command(cmd) abort
   let clear = !s:Windows() ? 'clear' : 'cls'
-  let cd = 'cd ' . shellescape(getcwd())
+
+  if !exists('g:test#ruby#rspec#smart_root')
+    let cd = 'cd ' . shellescape(getcwd())
+  else
+    let cd = 'cd ' . s:find_root()
+  endif
+
   let echo  = !s:Windows() ? 'echo -e '.shellescape(a:cmd) : 'Echo '.shellescape(a:cmd)
   let separator = !s:Windows() ? '; ' : ' & '
 

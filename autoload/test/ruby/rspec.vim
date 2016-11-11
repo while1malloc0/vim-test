@@ -19,6 +19,19 @@ endfunction
 function! test#ruby#rspec#build_args(args) abort
   let args = a:args
 
+  if exists('g:test#ruby#rspec#smart_root')
+    let parts = split(args[-1], '/')
+    let spec_dir_index = index(parts, 'spec')
+    let spec_dir = join(parts[spec_dir_index:len(parts)-1], '/')
+
+    if len(args) == 1
+      let args = [spec_dir]
+    else
+      let rest = args[0:len(args)-2]
+      let args = rest + [spec_dir]
+    endif
+  endif
+
   if test#base#no_colors()
     let args = ['--no-color'] + args
   endif
