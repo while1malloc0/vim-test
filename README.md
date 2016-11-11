@@ -1,3 +1,7 @@
+# NOTE
+
+This is a personal fork of vim-test to add features specific to my own needs. You're probably looking for [**this**](https://github.com/janko-m/vim-test)
+
 # test.vim
 
 A Vim wrapper for running tests on different granularities.
